@@ -6,5 +6,5 @@
 
 ## Dependencies
 
-- [CMake](https://cmake.org/)
+- [CMake 3.10+](https://cmake.org/)
 - [curlpp](https://github.com/jpbarrette/curlpp)
