@@ -14,7 +14,15 @@ void process_one_url(const std::string &url)
 {
     size_t pos = url.find_last_of("/");
     size_t end_pos = url.find(".m3u8");
+    size_t param_pos = url.find("?");
+
+    if (param_pos >= url.length()) {
+        param_pos = url.length();
+    }
+
     std::string prefix = url.substr(0, pos);
+    std::string suffix = url.substr(param_pos, (url.length() - param_pos));
+
     std::string output_file_name = url.substr(pos + 1, (end_pos - pos - 1));
 
     try
@@ -36,13 +44,20 @@ void process_one_url(const std::string &url)
         output_file.open("output/" + output_file_name + ".txt");
 
         output_file << url << std::endl;
+        bool found = false;
         while (std::getline(ss, line))
         {
             if (line.find(".ts") != line.npos)
             {
                 //std::cout << prefix << "/" << line << std::endl;
                 output_file << prefix << "/" << line << std::endl;
+                found = true;
             }
+        }
+
+        if (!found)
+        {
+            std::cout << "url=" << url << " cannot parse ts file" << std::endl;
         }
 
         output_file.close();
